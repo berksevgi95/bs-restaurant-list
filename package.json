@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "axios": "^0.21.0",
     "bs-ui-components": "^1.0.30",
     "leaflet": "^1.7.1",
     "react": "^16.13.1",

@@ -1,0 +1,47 @@
+.checkbox {
+    background: #dddddd;
+    padding: 5px 10px 5px 10px;
+    font-family: Ubuntu, sans-serif;
+    font-size: 13.3333px;
+    display: flex;
+    align-items: center;
+    transition: .3s;
+}
+
+.checkbox:active {
+    transform: scale(.95);
+}
+
+label {
+    white-space: nowrap;
+}
+
+label:hover {
+    cursor: pointer;
+}
+
+input[type='checkbox'] {
+    margin-right: 5px;
+    -webkit-appearance:none;
+    width:15px;
+    height:15px;
+    border:2px solid #51beb3;
+    outline:none;
+    display: flex;
+}
+
+input[type='checkbox']:before {
+    content:'';
+    display:block;
+    width:5px;
+    height:5px;
+    margin: auto;    
+    border-radius:50%;    
+}
+
+input[type='checkbox']:checked:before {
+    content: url('../../assets/svg/check.svg');
+    transform: scale(.9);
+    margin-left: 0px;
+    margin-top: -5px;
+}
