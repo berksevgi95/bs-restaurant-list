@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import L from 'leaflet';
 
 import Star from '../../components/Star/Star'
-import Gears from '../../assets/svg/Gears.svg'
+import Gears from '../../assets/svg/gears.svg'
 import Image from '../../assets/jpg/Image.jpg'
 import ErrorIcon from '../../assets/png/Error.png'
 import Axios from '../../utils/axios';
