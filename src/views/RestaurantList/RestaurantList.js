@@ -93,6 +93,18 @@ const RestaurantList = ({
         handleQuerying('all')
     }
 
+    const retrieveRestaurantList = () => {
+        if (restaurants && restaurants.length > 0) {
+            return restaurants
+                .filter(restaurant => restaurant.is_closed === !filterObj.openNow)
+                .filter(restaurant => filterObj.price ? restaurant.price === filterObj.price : restaurant)
+        } else {
+            return [];
+        }
+    }
+
+    const list = retrieveRestaurantList();
+
     React.useEffect(() => {
         handleFetchCategories()
         handleQuerying(filterObj.categories)
@@ -171,12 +183,8 @@ const RestaurantList = ({
                         />
                     </div> : 
                     <ul className="restaurant-list">
-                        {restaurants && 
-                            restaurants.length > 0 ?
-                            restaurants
-                                .filter(restaurant => restaurant.is_closed === !filterObj.openNow)
-                                .filter(restaurant => filterObj.price ? restaurant.price === filterObj.price : restaurant)
-                                .map(restaurant => (
+                        {list.length > 0 ?
+                            list.map(restaurant => (
                                     <li
                                         key={restaurant.id}
                                         className="lg:w-1/5 md:w-1/4 sm:w-1/3 float-left p-4 restaurant"

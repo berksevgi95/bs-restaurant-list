@@ -114,8 +114,9 @@ const RestaurantDetail = ({
                     
                     {restaurant.photos && 
                         restaurant.photos.length > 1 &&
-                        restaurant.photos.map(photo => (
+                        restaurant.photos.map((photo, index) => (
                             <img
+                                key={`${photo}-${index}`}
                                 className="mr-8 height-250"
                                 src={photo}
                             />

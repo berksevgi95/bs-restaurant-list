@@ -1,27 +1,28 @@
-# Berk Sevgi
+# BSRestaurantList
 
-Click [here](https://berksevgi95.github.io/me) to see demo
+Simple restaurant listing application created by BS
 
-To get started, clone the project and install the dependencies:
+## Introduction
 
-```
-npm install
-```
+Before starting, make sure to have latest version of Node.js.
 
-After that, start up Webpack Development Server:
-
+To run application server:
 ```
 npm start
 ```
 
-Webpack Development Server will watch `/src/styles.css` and `/tailwind.js` and rebuild your stylesheet on every change.
+Application will be served on `http://127.0.0.1:3000`
 
-You can play around with `/index.html` to see the effects of your changes.
+## Component basis
 
-To build a production bundle run:
+BSRestaurantList constructed with BS UI Components which is currently implementing by @berksevgi95. Click the [link](https://github.com/berksevgi95/bs-ui-components) to check it out!
 
-```
-npm run build
-```
+There are also several 3rd party npm modules used in this project. Here is the full list:
 
-After that you will have a ready to deploy bundle at `/me`
+<ul>
+    <li>"axios": "^0.21.0",
+    <li>"leaflet": "^1.7.1",
+    <li>"react": "^16.13.1",
+    <li>"react-dom": "^16.13.1",
+    <li>"react-router-dom": "^5.2.0"
+</ul>
