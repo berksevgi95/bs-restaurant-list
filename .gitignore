@@ -1,2 +1,4 @@
 /app/node_modules
 /proxy-server/node_modules
+
+/app/build
