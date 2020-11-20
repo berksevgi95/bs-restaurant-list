@@ -22,8 +22,3 @@ html, body, #app {
     display: flex;
     flex-direction: column;
 }
-
-#spinner {
-    background: url('assets/svg/gears.svg') no-repeat fixed center;
-    height: 100%;
-}

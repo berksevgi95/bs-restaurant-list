@@ -4,80 +4,162 @@ import {
     Select,
     BSTheme
 } from 'bs-ui-components';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import L from 'leaflet';
 
 import Star from '../../components/Star/Star'
+import Gears from '../../assets/svg/Gears.svg'
 import Image from '../../assets/jpg/Image.jpg'
+import ErrorIcon from '../../assets/png/Error.png'
+import Axios from '../../utils/axios';
 
 import 'leaflet/dist/leaflet.css'
 import './RestaurantDetail.css'
 
 const RestaurantDetail = ({
     history,
+    match,
     ...props
 }) => {
 
-    const [reviews, setReviews] = React.useState([112,2,1233,4,53123,6,7,8])
+    const [restaurant, setRestaurant] = React.useState(null)
+    const [reviews, setReviews] = React.useState([])
+    const [errorOccured, setErrorOccured] = React.useState(null)
 
     React.useEffect(() => {
-        const map = L.map('map').setView([51.505, -0.09], 13);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        L.marker([51.5, -0.09]).addTo(map)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-            .openPopup();
+        Axios.get(`/businesses/${match.params.id}`)
+            .then((result) => {
+                Promise.resolve(
+                    setRestaurant(result.data)
+                ).then(() => {
+                    const map = L.map('map').setView([51.505, -0.09], 13)
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    L.marker([result.data.coordinates.latitude, result.data.coordinates.longitude])
+                        .addTo(map)
+                        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                        .openPopup();
+                })
+                
+                
+            })
+            .catch((error) => {
+                setErrorOccured(error.message)
+            })
+        
+        Axios.get(`/businesses/${match.params.id}/reviews`)
+            .then((result) => {
+                setReviews(result.data.reviews)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }, [])
 
-    return (
+    return errorOccured ? (
+        <div className="w-full h-full flex">
+            <div className="m-auto ">
+                <img
+                    className="error-icon m-auto mb-8"
+                    src={ErrorIcon}
+                />
+                <h2 className="text-3xl whitespace-no-wrap text-center">
+                    {errorOccured}
+                </h2>
+                <div className="flex">
+                    <Link
+                        to="/restaurants"
+                        className="text-gray-600 hover:underline text-center m-auto"
+                    >
+                        Go back                    
+                    </Link>
+                </div>
+            </div>
+        </div>
+    ) : !restaurant ? (
+        <div className="flex-1 flex">
+            <img
+                className="loading m-auto"
+                src={Gears}
+            />
+        </div>
+    ) : (
         <React.Fragment>
             <div>
                 <div className="px-16 py-6">
-                    <h1 className="text-4xl">Restaurant 3</h1>
-                    <Star className="mt-2" rank={3} />
+                    <h1 className="text-4xl">
+                        {restaurant.name}
+                    </h1>
+                    <Star className="mt-2" rank={Math.floor(restaurant.rating)} />
                     <div className="flex justify-between mt-4">
                         <span className="text-xs text-gray-600">
-                            Thai - $$$$
+                            {restaurant.categories[0].title} - {restaurant.price}
                         </span>
                         <div className="text-xs text-gray-600">
-                            laksşdkaşsd
+                            {restaurant.is_closed ?
+                                <span className="text-red-500">Close</span> :
+                                <span className="text-green-500">Open</span>
+                            }
                         </div>
                     </div>
                 </div>
-                <div className="px-16 py-8 flex justify-between border-t border-b border-gray-400">
-                    <div id="map" style={{
-                        height: 250,
-                    }} className="w-1/2">
-
+                <div className="px-16 py-8 flex justify-between border-t border-b border-gray-400 overflow-auto">
+                    <div style={{
+                            minWidth: '50%'
+                        }}>
+                        <div id="map" style={{
+                            height: 250,
+                        }} className="mr-8">
+                        </div>
+                        <span className="text-sm text-gray-600">
+                            {restaurant.location.display_address.join(' ')}
+                        </span>
                     </div>
+                    
+                    {restaurant.photos && 
+                        restaurant.photos.length > 1 &&
+                        restaurant.photos.map(photo => (
+                            <img
+                                className="mr-8"
+                                src={photo}
+                                style={{
+                                    height: 250
+                                }}
+                            />
+                        ))}
                 </div>
             </div>
             
             <div className="px-16 py-6 overflow-auto">
                 <h4 className="text-xl text-gray-600">
-                    321 Reviews
+                    {restaurant.review_count || 0} Reviews
                 </h4>
                 <ul>
                     {reviews && reviews.length > 0 && reviews.map(review => (
-                        <li className="flex py-8">
+                        <li key={review.id} className="flex py-8">
                             <div className="w-1/4 flex">
                                 <img style={{
                                     height: 50
-                                }} src={Image}>
+                                }} src={review.user.image_url || Image}>
 
                                 </img>
                                 <div className="pl-4">
-                                    <b>asdasd</b>
-                                    <p className="text-gray-600">alaşksdşlak</p>
+                                    <b>
+                                        {review.user.name}
+                                    </b>
+                                    <p className="text-gray-600">
+                                        {review.time_created}
+                                    </p>
                                 </div>
                             </div>
                             <div className="w-3/4">
-                                <Star className="mb-4" rank={3} />
+                                <Star
+                                    className="mb-4"
+                                    rank={Math.floor(restaurant.rating)}
+                                />
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis enim quis maximus consequat. Donec ut nunc sit amet nulla sollicitudin porta. Suspendisse id arcu et nunc rutrum dapibus et eget velit. Quisque commodo erat a dolor ornare pulvinar. Aliquam pellentesque semper vestibulum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed id arcu mi. Donec at consectetur urna, eget venenatis ligula. Nullam malesuada rutrum nulla, at fermentum quam cursus a.
+                                    {review.text}
                                 </p>
                             </div>
                         </li>

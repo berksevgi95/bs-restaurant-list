@@ -151,60 +151,68 @@ const RestaurantList = ({
                 </div>
             </div>
             
-            <div className="px-16 py-6 overflow-auto">
+            <div className={`px-16 py-6 overflow-auto h-full ${isLoading ? 'flex flex-col' : ''}`}>
                 <h4 className="text-2xl">
                     All Restaurants
                 </h4>
                 {isLoading ?
-                    <img
-                        className="loading"
-                        src={Gears}
-                    /> :   
-                    restaurants && 
-                    restaurants.length > 0 ?
-                    restaurants
-                        .filter(restaurant => restaurant.is_closed === !filterObj.openNow)
-                        .filter(restaurant => filterObj.price ? restaurant.price === filterObj.price : restaurant)
-                        .map(restaurant => (
-                            <div key={restaurant.id} className="w-1/5 float-left p-4">
-                                <div className="flex bg-gray-200">
-                                    <img
-                                        className="m-auto h-40"
-                                        src={restaurant.image_url || Image}
-                                    />
-                                </div>
-                                <div className="h-32">
-                                    <h6 className="text-md mt-2">
-                                        {restaurant.name}
-                                    </h6>
-                                    <Star className="mt-2" rank={Math.floor(restaurant.rating)} />
-                                    <div className="flex justify-between mt-2">
-                                        <span className="text-xs text-gray-600">
-                                            {restaurant.categories[0].title} - {restaurant.price || 'N/A'}
-                                        </span>
-                                        <div className="text-xs text-gray-600">
-                                            {restaurant.is_closed ?
-                                                <span className="text-red-500">Close</span> :
-                                                <span className="text-green-500">Open</span>
-                                            }
+                    <div className="flex-1 flex">
+                        <img
+                            className="loading m-auto"
+                            src={Gears}
+                        />
+                    </div> : 
+                    <ul className="restaurant-list">
+                        {restaurants && 
+                            restaurants.length > 0 ?
+                            restaurants
+                                .filter(restaurant => restaurant.is_closed === !filterObj.openNow)
+                                .filter(restaurant => filterObj.price ? restaurant.price === filterObj.price : restaurant)
+                                .map(restaurant => (
+                                    <li key={restaurant.id} className="w-1/5 float-left p-4 restaurant">
+                                        <div className="flex bg-gray-200">
+                                            <img
+                                                className="m-auto h-40"
+                                                src={restaurant.image_url || Image}
+                                            />
                                         </div>
-                                    </div>
+                                        <div className="h-32">
+                                            <h6 className="text-md mt-2">
+                                                {restaurant.name}
+                                            </h6>
+                                            <Star className="mt-2" rank={Math.floor(restaurant.rating)} />
+                                            <div className="flex justify-between mt-2">
+                                                <span className="text-xs text-gray-600">
+                                                    {restaurant.categories[0].title} - {restaurant.price || 'N/A'}
+                                                </span>
+                                                <div className="text-xs text-gray-600">
+                                                    {restaurant.is_closed ?
+                                                        <span className="text-red-500">Close</span> :
+                                                        <span className="text-green-500">Open</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Link to={`/restaurants/${restaurant.id}`}>
+                                            <Button
+                                                className="w-full"
+                                                theme={BSTheme.SECONDARY}
+                                            >
+                                                Learn More
+                                            </Button>
+                                        </Link>
+                                        
+                                    </li>
+                            )) : (
+                            <li className="no-data flex">
+                                <div className="m-auto">
+                                    <div className="text-center text-6xl text-gray-400">:(</div>
+                                    <div className="text-center text-gray-400">No data to display!</div>
                                 </div>
-                                <Link to={`/restaurants/${restaurant.id}`}>
-                                    <Button
-                                        className="w-full"
-                                        theme={BSTheme.SECONDARY}
-                                    >
-                                        Learn More
-                                    </Button>
-                                </Link>
-                                
-                            </div>
-                )) : (
-                    <div className="w-full flex justify-center">
-                        No data to display!
-                    </div>
-                )}
+                            </li>
+                        )}
+                    </ul>
+                }
             </div>
             <Message
                 ref={messageRef}
