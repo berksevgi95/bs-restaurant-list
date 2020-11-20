@@ -1,6 +1,7 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack');
 
 const PATHS = {
   build: path.join(__dirname, './build')
@@ -54,5 +55,6 @@ module.exports = {
       filename: 'index.html',
       template: 'src/index.html',
     }),
+    new Dotenv()
   ],
 }
