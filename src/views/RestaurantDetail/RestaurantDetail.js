@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-    Button,
-    Select,
-    BSTheme
-} from 'bs-ui-components';
 import { Link, withRouter } from 'react-router-dom';
 import L from 'leaflet';
 
@@ -41,8 +36,6 @@ const RestaurantDetail = ({
                         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                         .openPopup();
                 })
-                
-                
             })
             .catch((error) => {
                 setErrorOccured(error.message)
@@ -91,7 +84,10 @@ const RestaurantDetail = ({
                     <h1 className="text-4xl">
                         {restaurant.name}
                     </h1>
-                    <Star className="mt-2" rank={Math.floor(restaurant.rating)} />
+                    <Star 
+                        className="mt-2"
+                        rank={Math.floor(restaurant.rating)}
+                    />
                     <div className="flex justify-between mt-4">
                         <span className="text-xs text-gray-600">
                             {restaurant.categories[0].title} - {restaurant.price}
@@ -105,12 +101,11 @@ const RestaurantDetail = ({
                     </div>
                 </div>
                 <div className="px-16 py-8 flex justify-between border-t border-b border-gray-400 overflow-auto">
-                    <div style={{
-                            minWidth: '50%'
-                        }}>
-                        <div id="map" style={{
-                            height: 250,
-                        }} className="mr-8">
+                    <div className="map-container">
+                        <div
+                            id="map"
+                            className="mr-8 height-250"
+                        >
                         </div>
                         <span className="text-sm text-gray-600">
                             {restaurant.location.display_address.join(' ')}
@@ -121,11 +116,8 @@ const RestaurantDetail = ({
                         restaurant.photos.length > 1 &&
                         restaurant.photos.map(photo => (
                             <img
-                                className="mr-8"
+                                className="mr-8 height-250"
                                 src={photo}
-                                style={{
-                                    height: 250
-                                }}
                             />
                         ))}
                 </div>
@@ -137,13 +129,12 @@ const RestaurantDetail = ({
                 </h4>
                 <ul>
                     {reviews && reviews.length > 0 && reviews.map(review => (
-                        <li key={review.id} className="flex py-8">
-                            <div className="w-1/4 flex">
-                                <img style={{
-                                    height: 50
-                                }} src={review.user.image_url || Image}>
-
-                                </img>
+                        <li key={review.id} className="flex flex-col sm:flex-row py-8">
+                            <div className="w-full sm:w-1/4 flex">
+                                <img 
+                                    className="height-50"
+                                    src={review.user.image_url || Image}
+                                />
                                 <div className="pl-4">
                                     <b>
                                         {review.user.name}
@@ -153,9 +144,9 @@ const RestaurantDetail = ({
                                     </p>
                                 </div>
                             </div>
-                            <div className="w-3/4">
+                            <div className="w-full sm:w-3/4">
                                 <Star
-                                    className="mb-4"
+                                    className="my-4 sm:mb-4"
                                     rank={Math.floor(restaurant.rating)}
                                 />
                                 <p>

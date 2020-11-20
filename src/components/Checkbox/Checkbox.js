@@ -6,6 +6,7 @@ const Checkbox = ({
     onClick,
     checked,
     label,
+    className,
     ...props
 }) => {
 
@@ -20,7 +21,7 @@ const Checkbox = ({
 
     return (
         <div
-            className="mx-2 checkbox"
+            className={`checkbox ${className || ''}`}
             onClick={handleOnClick}
         >
             <input

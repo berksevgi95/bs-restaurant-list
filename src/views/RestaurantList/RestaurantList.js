@@ -109,43 +109,51 @@ const RestaurantList = ({
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam lobortis enim quis maximus consequat. Donec ut nunc sit amet nulla sollicitudin porta. Suspendisse id arcu et nunc rutrum dapibus et eget velit. Quisque commodo erat a dolor ornare pulvinar. Aliquam pellentesque semper vestibulum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed id arcu mi. Donec at consectetur urna, eget venenatis ligula. Nullam malesuada rutrum nulla, at fermentum quam cursus a.
                     </h4>
                 </div>
-                <div className="px-16 py-4 flex justify-between border-t border-b border-gray-400">
-                    <div className="flex items-center">
-                        <span>Filter By:</span>
-                        <Checkbox
-                            checked={filterObj.openNow}
-                            label="Open Now"
-                            onClick={handleChangeFilter('openNow')}
-                        />
-                        <Select
-                            className="mx-2 selectors"
-                            value={filterObj.price}
-                            onChange={handleChangeFilter('price')}
-                            options={[{
-                                label: 'All',
-                                value: '',
-                            }, {
-                                label: '$',
-                                value: '$',
-                            }, {
-                                label: '$$',
-                                value: '$$',
-                            }, {
-                                label: '$$$',
-                                value: '$$$',
-                            }, {
-                                label: '$$$$',
-                                value: '$$$$'
-                            }]}
-                        />
-                        <Select
-                            className="mx-2 selectors"
-                            value={filterObj.categories}
-                            onChange={handleChangeCategory}
-                            options={categories}
-                        />
+                <div className="px-16 py-4 flex sm:flex-row flex-col justify-between border-t border-b border-gray-400">
+                    <div className="flex sm:flex-row flex-col items-center">
+                        <div className="w-full mb-2 sm:mx-2 sm:mb-0">
+                            Filter By:
+                        </div>
+                        <div className="flex sm:flex-row flex-col w-full">
+                            <Checkbox
+                                className="mb-2 sm:mx-2 sm:mb-0"
+                                checked={filterObj.openNow}
+                                label="Open Now"
+                                onClick={handleChangeFilter('openNow')}
+                            />
+                            <Select
+                                className="selectors mb-2 sm:mx-2 sm:mb-0"
+                                value={filterObj.price}
+                                onChange={handleChangeFilter('price')}
+                                options={[{
+                                    label: 'All',
+                                    value: '',
+                                }, {
+                                    label: '$',
+                                    value: '$',
+                                }, {
+                                    label: '$$',
+                                    value: '$$',
+                                }, {
+                                    label: '$$$',
+                                    value: '$$$',
+                                }, {
+                                    label: '$$$$',
+                                    value: '$$$$'
+                                }]}
+                            />
+                            <Select
+                                className="selectors mb-2 sm:mx-2 sm:mb-0"
+                                value={filterObj.categories}
+                                onChange={handleChangeCategory}
+                                options={categories}
+                            />
+                        </div>
                     </div>
-                    <Button onClick={handleResetFilter}>
+                    <Button
+                        theme={BSTheme.SECONDARY}
+                        onClick={handleResetFilter}
+                    >
                         Clear All
                     </Button>
                 </div>
@@ -169,7 +177,10 @@ const RestaurantList = ({
                                 .filter(restaurant => restaurant.is_closed === !filterObj.openNow)
                                 .filter(restaurant => filterObj.price ? restaurant.price === filterObj.price : restaurant)
                                 .map(restaurant => (
-                                    <li key={restaurant.id} className="w-1/5 float-left p-4 restaurant">
+                                    <li
+                                        key={restaurant.id}
+                                        className="lg:w-1/5 md:w-1/4 sm:w-1/3 float-left p-4 restaurant"
+                                    >
                                         <div className="flex bg-gray-200">
                                             <img
                                                 className="m-auto h-40"
@@ -207,7 +218,7 @@ const RestaurantList = ({
                             <li className="no-data flex">
                                 <div className="m-auto">
                                     <div className="text-center text-6xl text-gray-400">:(</div>
-                                    <div className="text-center text-gray-400">No data to display!</div>
+                                    <div className="text-center text-gray-400">No data to display</div>
                                 </div>
                             </li>
                         )}
